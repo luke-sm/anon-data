@@ -2,6 +2,11 @@ import unicodecsv as csv
 from faker import Factory
 from collections import defaultdict
 from csv import reader
+from Tkinter import *
+
+
+root = Tk()
+
 
 def anonymize_rows(rows):
 
@@ -33,21 +38,52 @@ def anonymize(source, target):
                 writer.writerow(row)
 
 
-uinput=raw_input("Name the file you would like to anonymise")
-# Request file name
+def commandline():
+
+    csvfile=entry1.get()
+    collumntitles=entry2.get()
+
+    #uinput=raw_input("Name the file you would like to anonymise")
+    uinput=csvfile
+    # Request file name
 
 
-with open(uinput, 'r') as readobj:
-    csv_reader = reader(readobj)
-    for row in csv_reader:
-        print("Which of the following rows would you like to anonymise? Seperate them with a single space", row)
-        break
-        # Read the header for each collumn and prompt the user to select one or multiple
+#    with open(uinput, 'r') as readobj:
+#        csv_reader = reader(readobj)
+#        for row in csv_reader:
+#            print("Which of the following rows would you like to anonymise? Seperate them with a single space", row)
+#            break
+            # Read the header for each collumn and prompt the user to select one or multiple
 
-newrow=raw_input()
-# Collect eh users input
+    global newrow
+    #newrow=raw_input()
+    newrow=collumntitles
+    # Collect eh users input
 
-splitrows=newrow.split()
-# Split the users input into its components
+    global splitrows
+    splitrows=newrow.split()
+    # Split the users input into its components
 
-anonymize(uinput, "data/anon set.csv")
+    anonymize(uinput, "data/anon set.csv")
+
+
+
+label1 = Label(root, text="Select your file:")
+entry1 = Entry(root)
+entry1.get()
+label2 = Label(root, text="Which rows should be anonymised:")
+entry2 = Entry(root)
+entry2.get()
+button1 = Button(root, text="Anonymise!", command=commandline)
+
+label1.grid(row=0, sticky=E)
+label2.grid(row=1, sticky=E)
+
+entry1.grid(row=0,column=1)
+entry2.grid(row=1,column=1)
+
+button1.grid(row=2, column=1)
+
+
+
+root.mainloop()
