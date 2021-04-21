@@ -5,11 +5,14 @@ from Tkinter import *
 root = Tk()
 
 
-
 def clean_df(df,cols):
     for col_name in cols:
-        keys = {cats: i for i, cats in enumerate(df[col_name].unique())}
-        df[col_name] = df[col_name].apply(lambda x: keys[x])
+        try:
+            keys = {cats: i for i, cats in enumerate(df[col_name].unique())}
+            df[col_name] = df[col_name].apply(lambda x: keys[x])
+            print('Collumn', col_name, 'succesfully anonymised')
+        except KeyError:
+            print('Collumn', col_name ,'could not be found')
     return df
 
 
@@ -21,16 +24,14 @@ def anonymise(uinput, collumntitles, cols):
 
 
 
-def commandline():
 
+def user_details():
     csvfile=entry1.get()
     collumntitles=entry2.get()
 
     uinput=csvfile.strip()
-
     splitting=collumntitles.split(",")
     cols = [s.strip() for s in splitting]
-
 
     anonymise(uinput, collumntitles, cols)
 
@@ -42,7 +43,7 @@ entry1.get()
 label2 = Label(root, text="Which rows should be anonymised:")
 entry2 = Entry(root)
 entry2.get()
-button1 = Button(root, text="Anonymise!", command=commandline)
+button1 = Button(root, text="Anonymise!", command=user_details)
 
 label1.grid(row=0, sticky=E)
 label2.grid(row=1, sticky=E)
